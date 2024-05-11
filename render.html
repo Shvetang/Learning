@@ -1,0 +1,80 @@
+<h1>Assignment</h1>
+<h2>Level 0</h2>
+<blockquote>
+<p>To log into level0, type this command in terminal:   <br />
+<code>ssh bandit0@bandit.labs.overthewire.org -p 2220</code>  <br />
+when prompted for the password type in bandit0   </p>
+</blockquote>
+<h2>Level 0 to Level 1</h2>
+<p>type <code>ls</code> to get see the file readme<br />
+use <code>cat readme</code> to display its contents<br />
+copy the password displayed<br />
+exit the server using <code>exit</code><br />
+use <code>ssh bandit0@bandit.labs.overthewire.org -p 2220</code> to log into level1  </p>
+<h2>Level 1 to Level 2</h2>
+<p><code>cat -</code> does not work as - is a special character<br />
+escaped using <code>cat ./-</code> to display next password  </p>
+<h2>Level 2 to Level 3</h2>
+<p>Due to presence off spaces of in the filename, <code>cat "spaces in teh filename"</code>   or <code>cat spaces\in\the\filename</code> can be used to escape  </p>
+<h2>Level 3 to Level 4</h2>
+<p>navigate to inhere directory with <code>cd inhere</code><br />
+as file is hiddden, <code>ls</code> gives a null result<br />
+<code>ls -a</code> forces hidden files to be displayed (list all)<br />
+.hidden file is displayed (. stands for a hidden file)<br />
+now use <code>cat .hidden</code>  </p>
+<h2>Level 4 to Level 5</h2>
+<p>navigate to inhere directory with <code>cd inhere</code><br />
+<code>ls</code> reveals 9 files<br />
+use <code>find | xargs file | grep text</code> to reveal file which is human-readable  (iteratively determines filetype of all the files in the directory and looks for text)
+use <code>cat ./-file07</code> to display contents  </p>
+<h2>Level 5 to Level 6</h2>
+<p>lrIWWI6bB37kxfiCQZqUdOIYfr6eEeqR  </p>
+<p>use <code>find -size 1033c | xargs file | grep text</code> to find the file (c represents bytes)<br />
+use <code>cat inhere/maybehere07/.file2</code> to dispaly contents and copy the text part  </p>
+<h2>Level 6 to Level 7</h2>
+<p>P4L4vucdmLnm8I7Vl7jG1ApGSfjYKqJU  </p>
+<p>first navigate to root directory using cd / to access entire server<br />
+then use <code>find -size 33c -group bandit6 -user bandit7 | xargs file | grep text</code> to find text file with given user and group
+<code>cat ./var/lib/dpkg/info/bandit7.password</code>  </p>
+<h2>Level 7 to Level 8</h2>
+<p>z7WtoNQU2XfjmMtWA8u5rN4vzqu4v99S  </p>
+<p>use <code>grep 'millionth' data.txt</code> to print the line containign the word millionth  </p>
+<h2>Level 8 to Level 9</h2>
+<p>TESKZC0XvTetK0S9xNwm25STk5iWrBvP  </p>
+<p>use <code>sort data.txt | uniq -c</code> as this command counts and puts together the number of times a line occurs<br />
+sort groups similar lines together<br />
+then uniq -c gives the count of each group<br />
+The desired password is the line which has count 1 befoore it  </p>
+<h2>Level 9 to Level 10</h2>
+<p>EN632PlfYiZbn3PhVK3XOGSlNInNE00t  </p>
+<p><code>cat data.txt | grep ===</code> produces the result that a binary file matches our search (looks for the pattern === in the file)<br />
+hence use <code>cat data.txt | grep -a ===</code> (-a forces allto be treated like a text file) and produces the output<br />
+Look for the password text after the 10 '=' seen  </p>
+<h2>Level 10 to Level 11</h2>
+<p>G7w8LIi6J3kTb8A7j9LgrywtEUlyyp6s  </p>
+<p>use <code>base64 -d data.txt</code> <br />
+base64 -d is used to decode a piece of data into text and also takes a file as input  </p>
+<h2>Level 11 to Level 12</h2>
+<p>6zPeziLdR2RKNdNYFNb6nVCKzphlXHBM  </p>
+<p>we need to rotate each character by thirteen i.e. a-z becomes n-z,a-m and same applies to the capital letters<br />
+the tr command allows us to do this (used to substitute each character of string or an other)<br />
+use <code>cat data.txt | tr 'a-z' 'n-za-m' | tr 'A-Z' 'N-ZA-M'</code><br />
+Output is: The password is JVNBBFSmZwKKOP0XbFXOoW8chDz5yVRv  </p>
+<h2>Level 12 to Level 13</h2>
+<p>JVNBBFSmZwKKOP0XbFXOoW8chDz5yVRv  </p>
+<p>tried to revert the file using xxd, did not work<br />
+then copied it to /tmp/myname123/f and then ran <code>xxd -r f decomp1</code><br />
+<code>file decomp1</code> to check its filetype - came out to be gzip<br />
+converted decomp1 to decomp1 using mv and then ran <code>gunzip -d decomp1</code> to decompress<br />
+came out as a bzip2 file - hence ran bzip2 -d to decompress <br />
+then converted to gz and decompressed<br />
+repeated the process till file type was ASCII and cat gave: The password is wbWdlBxEir4CaE8LaPhauuOo6pwRmrDw  </p>
+<h2>Level 13 to Level 14</h2>
+<p>wbWdlBxEir4CaE8LaPhauuOo6pwRmrDw  </p>
+<p>after connecting to bandit 13, run <code>ssh bandit14@bandit.labs.overthewire.org -p 2220 -i sshkey.private</code> <br />
+this is because running ls revels this sshkey.private (file with private key for public key authentication)<br />
+we are already in bandit14 but running <code>cat /etc/bandit_pass/bandit14</code> as given in the question gives the password fGrHPx402xGC7U7rXKDaxiWFTOiF0ENq needed in the next level  </p>
+<h2>Level 14 to Level 15</h2>
+<p>use <code>nc localhost 30000</code> to connect to the port 30000 of localhost using nc (netcat - allows simple network connection)<br />
+then in the prompt paste the password found in the previous level<br />
+this gives the next password jN2kgmIXJ6fShzhT2avhotn4Zcka6tnt  </p>
